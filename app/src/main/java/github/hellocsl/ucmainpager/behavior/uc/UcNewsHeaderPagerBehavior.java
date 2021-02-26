@@ -1,6 +1,7 @@
 package github.hellocsl.ucmainpager.behavior.uc;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -62,19 +63,32 @@ public class UcNewsHeaderPagerBehavior extends ViewOffsetBehavior {
         mChild = new WeakReference<View>(child);
     }
 
+//    @Override
+//    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, int nestedScrollAxes) {
+//        if (BuildConfig.DEBUG) {
+//            Log.d(TAG, "onStartNestedScroll: ");
+//        }
+//        return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+//    }
+
     @Override
-    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, int nestedScrollAxes) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int nestedScrollAxes, int type) {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "onStartNestedScroll: ");
         }
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
-    /**
-     * settle here
-     */
+//    /**
+//     * settle here
+//     */
+//    @Override
+//    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target) {
+//        settle(coordinatorLayout, child);
+//    }
+
     @Override
-    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target) {
+    public void onStopNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int type) {
         settle(coordinatorLayout, child);
     }
 
@@ -129,8 +143,18 @@ public class UcNewsHeaderPagerBehavior extends ViewOffsetBehavior {
 //    }
 
 
+//    @Override
+//    public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+//        float halfOfDis = dyUnconsumed / 4.0f;
+//        if (!canScroll(child, halfOfDis)) {
+//            child.setTranslationY(halfOfDis > 0 ? getHeaderOffsetRange() : 0);
+//        } else {
+//            child.setTranslationY(child.getTranslationY() - halfOfDis);
+//        }
+//    }
+
     @Override
-    public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
         float halfOfDis = dyUnconsumed / 4.0f;
         if (!canScroll(child, halfOfDis)) {
             child.setTranslationY(halfOfDis > 0 ? getHeaderOffsetRange() : 0);
@@ -140,7 +164,7 @@ public class UcNewsHeaderPagerBehavior extends ViewOffsetBehavior {
     }
 
     @Override
-    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed) {
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         //dy>0 scroll up;dy<0,scroll down
         //we don't consume at the first time when header is not closed and scroll down,maybe NestedScrollingChild need it now,
         // we consume the rest dy in onNestedScroll method
@@ -154,8 +178,25 @@ public class UcNewsHeaderPagerBehavior extends ViewOffsetBehavior {
             child.setTranslationY(child.getTranslationY() - halfOfDis);
             consumed[1] = dy;
         }
-
     }
+
+//    @Override
+//    public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed) {
+//        //dy>0 scroll up;dy<0,scroll down
+//        //we don't consume at the first time when header is not closed and scroll down,maybe NestedScrollingChild need it now,
+//        // we consume the rest dy in onNestedScroll method
+//        if (child.getTranslationY() >= getHeaderOffsetRange() && dy < 0)
+//            return;
+//
+//        float halfOfDis = dy / 4.0f;
+//        if (!canScroll(child, halfOfDis)) {
+//            child.setTranslationY(halfOfDis > 0 ? getHeaderOffsetRange() : 0);
+//        } else {
+//            child.setTranslationY(child.getTranslationY() - halfOfDis);
+//            consumed[1] = dy;
+//        }
+//
+//    }
 
 
     private int getHeaderOffsetRange() {
